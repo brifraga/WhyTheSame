@@ -14,11 +14,11 @@ using namespace std;
 class HashMap {
     private:
         unordered_map<string , vector<vector<string>>> map;
-        vector<string> genres;
+        vector<string> genres = {};
         //helper to check if word is valid
         bool validWord(string word);
     public:
-        //Takes our existing hashmap derived from the dataset
+        //returns a string vector with valid hashmaps
         vector<string> validGenres();
         //creates HashMap from existing txt file
         void insertHashMap(string filename);
