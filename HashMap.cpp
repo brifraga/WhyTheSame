@@ -28,7 +28,7 @@ void HashMap::insertHashMap(string filename) {
             istringstream iss(line);
             if(getline(iss, key, ',')) {
                 bool status = true;
-                while(true) {
+                while(status) {
                     vector<string> values;
                     for(int i = 0; i < 2; i++) {
                         string value;
@@ -39,12 +39,13 @@ void HashMap::insertHashMap(string filename) {
                             break;
                         }
                     }
+                    //insertWord(key, values);
                     data.push_back(values);
                 }
                 map[key] = data;
             }
         }
-
+        file.close();
     }
 }
 
@@ -53,11 +54,11 @@ void HashMap::insertWord(string word, vector<string> value) {
     values.push_back(value);
     map[word] = values;
     for(int i = 0; i < genres.size(); i++) {
-        if(genres[i] == value[1]) {
+        if(genres[i] == value[0]) {
           return;
         }
     }
-    genres.push_back(value[1]);
+    genres.push_back(value[0]);
 }
 
 vector<vector<string>> HashMap::getStats(string word) {
@@ -85,11 +86,17 @@ bool HashMap::saveHashMap(string filename) {
 
     if (file.is_open()) {
         // Write key-value pairs
-        for (const auto& [key, value] : map) {
-            file << key;
-            for (int i = 0; i < value.size(); i++) {
-                file << "," << value[i][0] << value[i][1] << "\n";
+        for (const auto& pair : map) {
+            cout << "here" << endl;
+            file << pair.first;
+            for (int i = 0; i < pair.second.size(); i++) {
+                if (pair.second[i].size() == 2) {
+                    file << "," << pair.second[i][0] << "," << pair.second[i][1];
+                } else {
+                    //return false;
+                }
             }
+            file << endl;
 
         }
         file.close();
