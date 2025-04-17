@@ -4,6 +4,8 @@
 
 #include "HashMap.h"
 
+#include <bits/locale_facets_nonio.h>
+
 
 bool HashMap::validWord(string word) {
     try {
@@ -39,10 +41,13 @@ void HashMap::insertHashMap(string filename) {
                             break;
                         }
                     }
-                    //insertWord(key, values);
-                    data.push_back(values);
+                    if(status) {
+                        insertWord(key, values);
+                    }
+
+                    //data.push_back(values);
                 }
-                map[key] = data;
+                //map[key] = data;
             }
         }
         file.close();
@@ -51,11 +56,25 @@ void HashMap::insertHashMap(string filename) {
 
 void HashMap::insertWord(string word, vector<string> value) {
     vector<vector<string>> values = getStats(word);
-    values.push_back(value);
+    bool found = true;
+    for(int i = 0; i < values.size(); i++) {
+        if(values[i] == value) {
+            return;
+        } else if (values[i][0] == value[0]) {
+            values[i] = value;
+            found = false;
+            break;
+        }
+    }
+    if (found) {
+        values.push_back(value);
+    }
     map[word] = values;
-    for(int i = 0; i < genres.size(); i++) {
-        if(genres[i] == value[0]) {
-          return;
+    if(!genres.empty()) {
+        for(int i = 0; i < genres.size(); i++) {
+            if(genres[i] == value[0]) {
+                return;
+            }
         }
     }
     genres.push_back(value[0]);
@@ -73,7 +92,7 @@ vector<string> HashMap::getStatsFromGenre(string word, string genre) {
     if(validWord(word)) {
         vector<vector<string>> stats = map.at(word);
         for (int i = 0; i < stats.size(); i++) {
-            if(stats[i][1] == genre) {
+            if(stats[i][0] == genre) {
                 return stats[i];
             }
         }
@@ -87,7 +106,6 @@ bool HashMap::saveHashMap(string filename) {
     if (file.is_open()) {
         // Write key-value pairs
         for (const auto& pair : map) {
-            cout << "here" << endl;
             file << pair.first;
             for (int i = 0; i < pair.second.size(); i++) {
                 if (pair.second[i].size() == 2) {
