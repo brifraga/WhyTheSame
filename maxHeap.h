@@ -6,22 +6,28 @@
 #include <unordered_map>
 #include <queue>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
 class MaxHeap {
 private:
-    // Each pair is <word, frequency>
-    priority_queue<pair<int, string>> heap;
-
-    // Map to track word frequencies
-    unordered_map<string, int> wordCount;
+    //Parallel stirng vector that lists the genre for the heap index
+    vector<string> heapGenre;
+    // A vector that contains MaxHeaps with pair is <word, frequency>
+    vector<priority_queue<pair<int, string>>> heap;
 
 public:
-    void insert(string word);
-    pair<int, string> getMax(); // Get word with highest frequency
-    vector<pair<int, string>> getAll(); // Get all words sorted by frequency
-    void clear(); // Clears heap and map
+    //Function to load max heap from file (uses the same file as hashmap load)
+    void loadFromFile(string filename);
+    //Simple insert debugging and helper function, takes in word genre and count.
+    void insert(string word, string genre, int count);
+    //Gets word with highest frequency within genre. Optional string vector with words to filter.
+    pair<int, string> getMax(string genre, vector<string> filter = {});
+    //Gets all wordd sorted by frequency within a genre, has optional string vector with words to filter
+    vector<pair<int, string>> getAll(string genre, vector<string> filter = {}); // Get all words sorted by frequency
+    //void clear(); // Clears heap and map
 };
 
 #endif // MAXHEAP_H
