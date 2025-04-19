@@ -26,6 +26,22 @@ vector<string> cleanAndTokenize(const string& lyrics) {
 
     return words;
 }
+
+bool endsWithRealQuote(const string& line) {
+    int len = line.size();
+    if (len == 0) return false;
+    // check if ends in " or """
+    if (line[len - 1] == '"') {
+        if (len >= 3 && line.substr(len - 3) == "\"\"\"") {
+            return true;
+        }
+        if (len >= 2 && line[len - 2] != '"') {
+            return true;
+        }
+    }
+    return false;
+}
+
 //opens the CSV file, reads line by line, extracts genre + lyrics, cleans the lyrics, returns a vector of Song objects
 vector<Song> parseDataset(const string& dataset) {
     cout << "Attempting to read file: " << dataset << endl; // Debug line
@@ -40,29 +56,33 @@ vector<Song> parseDataset(const string& dataset) {
 
     string line;
     getline(file, line); // skip header
-
+    int linenumber = 0;
     while (getline(file, line)) {
         stringstream ss(line);
-        string genre, lyrics;
+        string genre, views, lyrics;
 
         getline(ss, genre, ',');
+        //skips the views unless we want to use them later
+        getline(ss, views, ',');
 
-        for (int i = 0; i < 5; ++i) {
-            string temp;
-            getline(ss, temp, ',');
-        }
-
+        //removed the skipping of other columns
         getline(ss, lyrics);
+        //the lyrics can be on multiple lines, will continue parsing as long as line doesnt end in double quotes or if it ends in single or triple quotes
+        while (getline(file, line) && !(endsWithRealQuote(line))) {
+            lyrics += " " + line;
+        }
+        lyrics += " " + line;
 
         vector<string> words = cleanAndTokenize(lyrics);
         songs.push_back({genre, words});
 
         //debug print
-        cout << "Genre: " << genre << ", First few words: ";
+        linenumber++;
+        cout << "Song: " << linenumber << ", Genre: " << genre << ", First few words: ";
         for (int i = 0; i < min(5, (int)words.size()); ++i) {
             cout << words[i] << " ";
         }
-        cout << endl; 
+        cout << endl;
     }
 
     file.close();
