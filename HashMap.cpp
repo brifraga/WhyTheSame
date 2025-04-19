@@ -80,6 +80,33 @@ void HashMap::insertWord(string word, vector<string> value) {
     genres.push_back(value[0]);
 }
 
+void HashMap::insertWordOccurrence(string word, string genre) {
+    vector<vector<string>> values = getStats(word);
+    bool found = false;
+    for(int i = 0; i < values.size(); i++) {
+        if(values[i][0] == genre) {
+            values[i][1] = to_string(stoi(values[i][1]) + 1);
+            found = true;
+            break;
+        }
+    }
+    if(!found) {
+        vector<string> newVal;
+        newVal = {genre, "1"};
+        values.push_back(newVal);
+    }
+    map[word] = values;
+    if(!genres.empty()) {
+        for(int i = 0; i < genres.size(); i++) {
+            if(genres[i] == genre) {
+                return;
+            }
+        }
+    }
+    genres.push_back(genre);
+}
+
+
 vector<vector<string>> HashMap::getStats(string word) {
     if(validWord(word)) {
         vector<vector<string>> stats = map.at(word);
