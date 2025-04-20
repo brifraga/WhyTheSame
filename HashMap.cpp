@@ -2,6 +2,10 @@
 // Created by tomas on 4/16/2025.
 //
 
+//
+// Created by tomas on 4/16/2025.
+//
+
 #include "HashMap.h"
 
 #include <bits/locale_facets_nonio.h>
@@ -149,4 +153,16 @@ bool HashMap::saveHashMap(string filename) {
     } else {
         return false;
     }
+}
+
+int HashMap::getWordGenreCount(string word, string genre) {
+    vector<string> stats = getStatsFromGenre(word, genre);
+    if (stats.size() >= 2) {
+        try {
+            return stoi(stats[1]);
+        } catch (...) {
+            return 0;
+        }
+    }
+    return 0;
 }
