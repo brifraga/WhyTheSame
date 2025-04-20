@@ -21,10 +21,13 @@ void MaxHeap::loadFromFile(string filename) {
                             break;
                         }
                     }
+                    // debug for insert?
+                    /*
                     if(status) {
                         cout << "here" << endl;
                         insert(key, values[0], stoi(values[1]));
                     }
+                    */
 
                     //data.push_back(values);
                 }
