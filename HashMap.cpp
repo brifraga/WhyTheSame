@@ -150,3 +150,16 @@ bool HashMap::saveHashMap(string filename) {
         return false;
     }
 }
+
+int HashMap::getWordGenreCount(string word, string genre) {
+    vector<string> stats = getStatsFromGenre(word, genre);
+    if (stats.size() >= 2) {
+        try {
+            return stoi(stats[1]);
+        } catch (...) {
+            return 0;
+        }
+    }
+    return 0;
+}
+

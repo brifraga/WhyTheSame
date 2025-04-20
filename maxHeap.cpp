@@ -1,4 +1,5 @@
 #include "MaxHeap.h"
+#include <unordered_set>
 
 void MaxHeap::loadFromFile(string filename) {
     ifstream file(filename);
@@ -22,12 +23,9 @@ void MaxHeap::loadFromFile(string filename) {
                         }
                     }
                     // debug for insert?
-                    /*
-                    if(status) {
-                        cout << "here" << endl;
+                    if(status && values.size() == 2) {
                         insert(key, values[0], stoi(values[1]));
                     }
-                    */
 
                     //data.push_back(values);
                 }
@@ -97,6 +95,34 @@ pair<int, string> MaxHeap::getMax(string genre, vector<string> filter) {
 }
 
 vector<pair<int, string>> MaxHeap::getAll(string genre, vector<string> filter) {
+    vector<pair<int, string>> result;
+    int genreIndex = -1;
+
+    for (int i = 0; i < heapGenre.size(); i++) {
+        if (heapGenre[i] == genre) {
+            genreIndex = i;
+            break;
+        }
+    }
+
+    if (genreIndex == -1) return result;
+
+    unordered_set<string> filterSet(filter.begin(), filter.end());
+    priority_queue<pair<int, string>> pqCopy = heap[genreIndex];
+
+    while (!pqCopy.empty()) {
+        pair<int, string> current = pqCopy.top();
+        pqCopy.pop();
+
+        if (filterSet.find(current.second) == filterSet.end()) {
+            result.push_back(current);
+        }
+    }
+
+    return result;
+}
+/*
+vector<pair<int, string>> MaxHeap::getAll(string genre, vector<string> filter) {
     vector<pair<int, string>> empty;
     int genreIndex;
     bool found = false;
@@ -129,7 +155,23 @@ vector<pair<int, string>> MaxHeap::getAll(string genre, vector<string> filter) {
     }
     return empty;
 }
+*/
+vector<pair<string, int>> MaxHeap::getTopWordsByGenre(string genre, int topN, vector<string> filter) {
+    vector<pair<string, int>> result;
+    vector<pair<int, string>> allWords = getAll(genre, filter);
 
+    int count = 0;
+    for (const auto& wordPair : allWords) {
+        if (count++ >= topN) break;
+        result.push_back({wordPair.second, wordPair.first}); // flip to <word, count>
+    }
+    return result;
+}
+
+
+vector<string> MaxHeap::getLoadedGenres() {
+    return heapGenre;
+}
 
 /*
 void MaxHeap::clear() {
