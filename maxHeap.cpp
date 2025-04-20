@@ -1,36 +1,131 @@
-#ifndef MAXHEAP_H
-#define MAXHEAP_H
+#include "MaxHeap.h"
 
-#include <vector>
-#include <string>
-#include <unordered_map>
-#include <queue>
-#include <iostream>
-#include <fstream>
-#include <sstream>
+void MaxHeap::loadFromFile(string filename) {
+    ifstream file(filename);
+    if (file.is_open()) {
+        string line;
+        while(getline(file, line)) {
+            string key;
+            vector<vector<string>> data;
+            istringstream iss(line);
+            if(getline(iss, key, ',')) {
+                bool status = true;
+                while(status) {
+                    vector<string> values;
+                    for(int i = 0; i < 2; i++) {
+                        string value;
+                        if(getline(iss, value, ',')) {
+                            values.push_back(value);
+                        } else {
+                            status = false;
+                            break;
+                        }
+                    }
+                    // debug for insert?
+                    /*
+                    if(status) {
+                        cout << "here" << endl;
+                        insert(key, values[0], stoi(values[1]));
+                    }
+                    */
 
-using namespace std;
+                    //data.push_back(values);
+                }
+                //map[key] = data;
+            }
+        }
+        file.close();
+    }
+}
 
-class MaxHeap {
-private:
-    //Parallel stirng vector that lists the genre for the heap index
-    vector<string> heapGenre;
-    // A vector that contains MaxHeaps with pair is <word, frequency>
-    vector<priority_queue<pair<int, string>>> heap;
+void MaxHeap::insert(string word, string genre, int count) {
+    pair<int, string> currPair = {count, word};
+    int genreIndex;
+    bool found = false;
+    for(int i = 0; i < heapGenre.size(); i++ ) {
+        if(heapGenre[i] == genre) {
+            heap[i].push(currPair);
+            return;
+        }
+    }
+    priority_queue<pair<int, string>> pq;
+    pq.push(currPair);
+    heapGenre.push_back(genre);
+    heap.push_back(pq);
+}
 
-public:
-    //Function to load max heap from file (uses the same file as hashmap load)
-    void loadFromFile(string filename);
-    //Simple insert debugging and helper function, takes in word genre and count.
-    void insert(string word, string genre, int count);
-    //Gets word with highest frequency within genre. Optional string vector with words to filter.
-    pair<int, string> getMax(string genre, vector<string> filter = {});
-    //Gets all wordd sorted by frequency within a genre, has optional string vector with words to filter
-    vector<pair<int, string>> getAll(string genre, vector<string> filter = {}); // Get all words sorted by frequency
-    //void clear(); // Clears heap and map
-    vector<pair<string, int>> getTopWordsByGenre(string genre, int topN, vector<string> filter = {});
-    vector<string> getLoadedGenres();
+pair<int, string> MaxHeap::getMax(string genre, vector<string> filter) {
+    pair<int, string> empty;
+    int genreIndex;
+    bool found = false;
+    for(int i = 0; i < heapGenre.size(); i++ ) {
+        if(heapGenre[i] == genre) {
+            genreIndex = i;
+            found = true;
+            break;
+        }
+    }
+    if(!found) {
+        return empty;
+    }
+    if(filter.empty()) {
+        return heap[genreIndex].top();
+    }
+    priority_queue<pair<int, string>> PqCopy = heap[genreIndex];
+    while(!PqCopy.empty()) {
+        cout<<"here"<<endl;
+        for(int i = 0; i < filter.size(); i++) {
+            if(filter[i] == PqCopy.top().second) {
+                PqCopy.pop();
+            }
+        }
+        return PqCopy.top();
+    }
+    return empty;
+    /*
+    while (!heap.empty()) {
+        string word = heap.top().second;
+        int freq = heap.top().first;
 
-};
+        if (wordCount[word] == freq) {
+            return {freq, word};
+        }
+        heap.pop(); // stale value, skip
+    }
+    return {0, ""};
+    */
+}
 
-#endif // MAXHEAP_H
+vector<pair<int, string>> MaxHeap::getAll(string genre, vector<string> filter) {
+    vector<pair<int, string>> empty;
+    int genreIndex;
+    bool found = false;
+    for(int i = 0; i < heapGenre.size(); i++ ) {
+        if(heapGenre[i] == genre) {
+            genreIndex = i;
+            found = true;
+            break;
+        }
+    }
+    if(!found) {
+        return empty;
+    }
+    priority_queue<pair<int, string>> PqCopy = heap[genreIndex];
+    if(!filter.empty()) {
+        while(!PqCopy.empty()) {
+            for(int i = 0; i < filter.size(); i++) {
+                if(filter[i] == PqCopy.top().second) {
+                    PqCopy.pop();
+                }
+            }
+            empty.push_back(PqCopy.top());
+            PqCopy.pop();
+        }
+    } else {
+        while(!PqCopy.empty()) {
+            empty.push_back(PqCopy.top());
+            PqCopy.pop();
+        }
+    }
+    return empty;
+}
