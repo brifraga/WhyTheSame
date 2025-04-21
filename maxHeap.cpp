@@ -129,11 +129,3 @@ vector<pair<int, string>> MaxHeap::getAll(string genre, vector<string> filter) {
     }
     return empty;
 }
-
-
-/*
-void MaxHeap::clear() {
-    while (!heap.empty()) heap.pop();
-    wordCount.clear();
-}
-*/
