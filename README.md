@@ -3,5 +3,5 @@ This is the template for Project 3 repositories. It includes all the assignment 
 
 #Instructions
 - Download All files (including "wordshashmap.txt")
-- Make sure "wordshashmap.txt is in root directory
+- Make sure "wordshashmap.txt" is in root directory
 - Run program
