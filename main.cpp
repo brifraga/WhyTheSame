@@ -8,12 +8,12 @@
 using namespace std;
 
 int main() {
+    HashMap songhashmap;
 
     //loads dataset into a vector of songs
+    /*
     vector<Song> songs = parseDataset("top100knew.csv");
-
     //creates hashmap and prints when every 10000 songs are put into the hashmap
-    HashMap songhashmap;
     for (int i = 0; i < songs.size(); i++) {
         for (const string& word : songs[i].words) {
             songhashmap.insertWordOccurrence(word, songs[i].genre);
@@ -22,18 +22,19 @@ int main() {
             cout << i << " songs uploaded to hashmap!" << endl;
         }
     }
-
     //makes hashmap txt file (works with large dataset)
-    if (songhashmap.saveHashMap("wordhashmap.csv")) {
+    if (songhashmap.saveHashMap("wordhashmap.txt")) {
         cout << "Hash map saved!" << endl;
     } else {
         cout << "Hash map NOT saved ;(..." << endl;
     }
+    */
 
     //create maxheap from hashmap?? (can comment everything else ^^^above^^^ until top of main if just hashmap is needed to save time)
     //not sure how heap is made...
+    songhashmap.insertHashMap("wordhashmap.txt");
     MaxHeap songheapmap;
-    songheapmap.loadFromFile("wordhashmap.csv");
+    songheapmap.loadFromFile("wordhashmap.txt");
     cout << "\nGenres loaded into heap:\n";
     for (const auto& g : songheapmap.getLoadedGenres()) {
         cout << "- " << g << endl;

@@ -77,12 +77,12 @@ vector<Song> parseDataset(const string& dataset) {
         songs.push_back({genre, words});
 
         //debug print
-        linenumber++;
-        cout << "Song: " << linenumber << ", Genre: " << genre << ", First few words: ";
-        for (int i = 0; i < min(5, (int)words.size()); ++i) {
-            cout << words[i] << " ";
-        }
-        cout << endl;
+        //linenumber++;
+        //cout << "Song: " << linenumber << ", Genre: " << genre << ", First few words: ";
+        //for (int i = 0; i < min(5, (int)words.size()); ++i) {
+            //cout << words[i] << " ";
+        //}
+        //cout << endl;
     }
 
     file.close();

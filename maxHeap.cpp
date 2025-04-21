@@ -22,12 +22,11 @@ void MaxHeap::loadFromFile(string filename) {
                         }
                     }
                     // debug for insert?
-                    /*
+
                     if(status) {
-                        cout << "here" << endl;
                         insert(key, values[0], stoi(values[1]));
                     }
-                    */
+
 
                     //data.push_back(values);
                 }
@@ -95,7 +94,9 @@ pair<int, string> MaxHeap::getMax(string genre, vector<string> filter) {
     return {0, ""};
     */
 }
-
+vector<std::string> MaxHeap::getLoadedGenres() {
+    return heapGenre;
+}
 vector<pair<int, string>> MaxHeap::getAll(string genre, vector<string> filter) {
     vector<pair<int, string>> empty;
     int genreIndex;
