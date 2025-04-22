@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <list>
 #include <utility>
+#include <functional>
 
 using namespace std;
 #ifndef HASHMAP_H
@@ -14,13 +15,10 @@ class HashStruct {
     private:
         int BucketSize = 10;
         vector<list<pair<string, vector<pair<string, int>>>>> table;
+        hash<string> hashFunction;
         int numElements = 0;
         int Hash(string key) {
-            int hash = 0;
-            for (char c : key) {
-                hash = (hash*31 + c) % BucketSize;
-            }
-            return hash;
+            return hashFunction(key) % table.size();
         }
     public:
         HashStruct() : table(BucketSize) {}
