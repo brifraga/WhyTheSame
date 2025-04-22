@@ -132,35 +132,37 @@ vector<std::string> MaxHeap::getLoadedGenres() {
     return heapGenre;
 }
 vector<pair<int, string>> MaxHeap::getAll(string genre, vector<string> filter) {
-    vector<pair<int, string>> empty;
-    int genreIndex;
-    bool found = false;
-    for(int i = 0; i < heapGenre.size(); i++ ) {
-        if(heapGenre[i] == genre) {
+    vector<pair<int, string>> result;
+    int genreIndex = -1;
+    for (int i = 0; i < heapGenre.size(); ++i) {
+        if (heapGenre[i] == genre) {
             genreIndex = i;
-            found = true;
             break;
         }
     }
-    if(!found) {
-        return empty;
+    if (genreIndex == -1) {
+        return result;
     }
-    MaxHeapStruct PqCopy = heap[genreIndex];
-    if(!filter.empty()) {
-        while(!PqCopy.empty()) {
-            for(int i = 0; i < filter.size(); i++) {
-                if(filter[i] == PqCopy.top().second) {
-                    PqCopy.pop();
-                }
+
+    MaxHeapStruct pqCopy = heap[genreIndex];
+
+    while (!pqCopy.empty() && result.size() < 10) {
+        pair<int, string> top = pqCopy.top();
+        pqCopy.pop();
+
+        bool isFiller = false;
+        for (const string& word : filter) {
+            if (word == top.second) {
+                isFiller = true;
+                break;
             }
-            empty.push_back(PqCopy.top());
-            PqCopy.pop();
         }
-    } else {
-        while(!PqCopy.empty()) {
-            empty.push_back(PqCopy.top());
-            PqCopy.pop();
+
+        if (!isFiller) {
+            result.push_back(top);
         }
     }
-    return empty;
+
+    return result;
 }
+
