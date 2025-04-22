@@ -70,6 +70,10 @@ public:
     //Gets all wordd sorted by frequency within a genre, has optional string vector with words to filter
     vector<pair<int, string>> getAll(string genre, vector<string> filter = {}); // Get all words sorted by frequency
     //void clear(); // Clears heap and map
+    vector<pair<string, int>> getTopWordsByGenre(string genre, int topN, vector<string> filter = {});
+    vector<string> getLoadedGenres();
+
 };
 
 #endif // MAXHEAP_H
+

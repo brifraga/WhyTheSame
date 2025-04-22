@@ -57,6 +57,8 @@ class HashMap {
         pair<string,int> getStatsFromGenre(string word, string genre);
         //Used to save hashmap state into txt file (tested)
         bool saveHashMap(string filename);
+        int getWordGenreCount(string word, string genre);
+
 
 };
 
