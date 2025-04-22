@@ -24,15 +24,20 @@ class HashStruct {
         }
     public:
         HashStruct() : table(BucketSize) {}
+        //inserts into hashtable
         void insert(string key, vector<pair<string, int>> value);
+        //Allows access through [] operator
         vector<pair<string, int>> operator[](string key);
+        //Checks if word is in hashmap
         vector<pair<string, int>> at(const string& key);
+        //Allows for simple iteration through hashmap
         auto begin() {
             return table.begin();
         }
         auto end() {
             return table.end();
         }
+        //Used for rehashing table to avoid collisions
         void rehash();
 };
 
@@ -57,7 +62,6 @@ class HashMap {
         pair<string,int> getStatsFromGenre(string word, string genre);
         //Used to save hashmap state into txt file (tested)
         bool saveHashMap(string filename);
-        int getWordGenreCount(string word, string genre);
 
 
 };
