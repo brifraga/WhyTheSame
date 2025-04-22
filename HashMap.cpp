@@ -9,7 +9,6 @@ void HashStruct::insert(string key, vector<pair<string, int>> value) {
     for (auto& valInList : table[hashIndex]) {
         if (valInList.first == key) {
             valInList.second = value;
-            //cout << "word: " << key << " genre: " << value[value.size()-1].first << " value: " << value[value.size()-1].second << endl;
             return;
         }
     }
@@ -48,8 +47,6 @@ vector<pair<string, int> > HashStruct::at(const string &key) {
     int hashIndex = Hash(key);
     for (auto valInList : table[hashIndex]) {
         if (valInList.first == key) {
-            //cout << key << endl;
-            //cout << valInList.second[valInList.second.size()-1].second << endl;
             return valInList.second;
         }
     }
@@ -104,10 +101,7 @@ void HashMap::insertHashMap(string filename) {
                         pair.second = stoi(values[1]);
                         insertWord(key, pair);
                     }
-
-                    //data.push_back(values);
                 }
-                //map[key] = data;
             }
         }
         file.close();
@@ -200,7 +194,6 @@ bool HashMap::saveHashMap(string filename) {
                     if (pair.second[i].second != 0) {
                         file << "," << pair.second[i].first << "," << pair.second[i].second;
                     } else {
-                        //return false;
                     }
                 }
                 file << endl;

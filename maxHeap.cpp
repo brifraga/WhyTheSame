@@ -55,16 +55,10 @@ void MaxHeap::loadFromFile(string filename) {
                             break;
                         }
                     }
-                    // debug for insert?
-
                     if(status) {
                         insert(key, values[0], stoi(values[1]));
                     }
-
-
-                    //data.push_back(values);
                 }
-                //map[key] = data;
             }
         }
         file.close();
@@ -115,18 +109,6 @@ pair<int, string> MaxHeap::getMax(string genre, vector<string> filter) {
         return PqCopy.top();
     }
     return empty;
-    /*
-    while (!heap.empty()) {
-        string word = heap.top().second;
-        int freq = heap.top().first;
-
-        if (wordCount[word] == freq) {
-            return {freq, word};
-        }
-        heap.pop(); // stale value, skip
-    }
-    return {0, ""};
-    */
 }
 
 vector<pair<int, string>> MaxHeap::getAll(string genre, vector<string> filter) {
