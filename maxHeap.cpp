@@ -128,9 +128,7 @@ pair<int, string> MaxHeap::getMax(string genre, vector<string> filter) {
     return {0, ""};
     */
 }
-vector<std::string> MaxHeap::getLoadedGenres() {
-    return heapGenre;
-}
+
 vector<pair<int, string>> MaxHeap::getAll(string genre, vector<string> filter) {
     vector<pair<int, string>> empty;
     int genreIndex;
