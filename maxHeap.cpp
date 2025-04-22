@@ -1,5 +1,39 @@
 #include "MaxHeap.h"
 
+
+void MaxHeapStruct::push(pair<int, string> p) {
+    heap.push_back(p);
+    heapifyUp(heap.size() - 1);
+}
+
+pair<int, string> MaxHeapStruct::pop() {
+    if (heap.empty()) {
+        throw out_of_range("Max heap is empty");
+    }
+    pair<int, string> maxValue = heap[0];
+    heap[0] = heap.back();
+    heap.pop_back();
+    heapifyDown(0);
+
+    return maxValue;
+}
+
+pair<int, string> MaxHeapStruct::top() {
+    if (heap.empty()) {
+        throw runtime_error("MaxHeap is empty");
+    }
+    return heap[0];
+}
+
+bool MaxHeapStruct::empty() {
+    return heap.empty();
+}
+
+int MaxHeapStruct::size() {
+    return heap.size();
+}
+
+
 void MaxHeap::loadFromFile(string filename) {
     ifstream file(filename);
     if (file.is_open()) {
@@ -46,7 +80,7 @@ void MaxHeap::insert(string word, string genre, int count) {
             return;
         }
     }
-    priority_queue<pair<int, string>> pq;
+    MaxHeapStruct pq;
     pq.push(currPair);
     heapGenre.push_back(genre);
     heap.push_back(pq);
@@ -69,7 +103,7 @@ pair<int, string> MaxHeap::getMax(string genre, vector<string> filter) {
     if(filter.empty()) {
         return heap[genreIndex].top();
     }
-    priority_queue<pair<int, string>> PqCopy = heap[genreIndex];
+    MaxHeapStruct PqCopy = heap[genreIndex];
     while(!PqCopy.empty()) {
         cout<<"here"<<endl;
         for(int i = 0; i < filter.size(); i++) {
@@ -108,7 +142,7 @@ vector<pair<int, string>> MaxHeap::getAll(string genre, vector<string> filter) {
     if(!found) {
         return empty;
     }
-    priority_queue<pair<int, string>> PqCopy = heap[genreIndex];
+    MaxHeapStruct PqCopy = heap[genreIndex];
     if(!filter.empty()) {
         while(!PqCopy.empty()) {
             for(int i = 0; i < filter.size(); i++) {

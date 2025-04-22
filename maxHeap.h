@@ -11,12 +11,54 @@
 
 using namespace std;
 
+class MaxHeapStruct {
+    private:
+        vector<pair<int, string>> heap;
+        //Maintains heap during insertion
+        void heapifyUp(int i) {
+            int parent = (i - 1) / 2;
+            if(i > 0 && heap[i].first > heap[parent].first) {
+                swap(heap[i], heap[parent]);
+                heapifyUp(parent);
+            }
+        }
+        //Maintains heap during deletion
+        void heapifyDown(int i) {
+            int left = 2 * i + 1;
+            int right = 2 * i + 2;
+            int largest = i;
+            if(left < heap.size() && heap[left].first > heap[largest].first) {
+                largest = left;
+            }
+            if (right < heap.size() && heap[right].first > heap[largest].first) {
+                largest = right;
+            }
+            if(largest != i) {
+                swap(heap[i], heap[largest]);
+                heapifyDown(largest);
+            }
+        }
+
+    public:
+        //Adds element to heap
+        void push(pair<int, string> p);
+        //Removes element from top of the heap
+        pair<int, string> pop();
+        //Get Maximum Element
+        pair<int, string> top();
+        //Check if empty
+        bool empty();
+        //Get Size
+        int size();
+
+};
+
 class MaxHeap {
 private:
     //Parallel stirng vector that lists the genre for the heap index
     vector<string> heapGenre;
     // A vector that contains MaxHeaps with pair is <word, frequency>
-    vector<priority_queue<pair<int, string>>> heap;
+    vector<MaxHeapStruct> heap;
 
 public:
     //Function to load max heap from file (uses the same file as hashmap load)
